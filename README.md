@@ -38,6 +38,7 @@ OOP style
 * methods:
     * private:
         * `model.eval_loss=@(outputlayer,y_true)eval_loss(outputlayer,y_true)`
+        * `model.optimize=@(layer,batch,epoch)layer_optimize(layer,optimizer,batch,epoch)`
     * public:
         * `model.train=@(x,y,nb_epoch,verbose,filename)model_train(model,x,y,nb_epoch,verbose,filename)`
             * `model=model.train(x,y,nb_epoch,verbose,filename)`  
@@ -84,15 +85,25 @@ model=model_train(model,x,y,nb_epoch,3,'example/minimodel_f.mat');
     * `type` : `string`,type of the layer,available types:`input`,`dense`,`lstm`,`activation`  
     * `prelayer_type` : `string`,type of the previous layer,available types:`input`,`dense`,`lstm`,`activation`
     * `trainable` : `bool`,is the layer trainable
-    * `input_shape` : a `vector`,`[input_dim,batchsize]` or `[input_dim,timestep,batchsize]`
-    * `output_shape` : a `vector`,`[hiddensize,batchsize]`or`[hiddensize,timestep,batchsize]`
+    * `flag` : train model or predict model  
+    * `configs` :configures of the layer  
+    * `input_shape` : `vector`,`[input_dim,batchsize]` or `[input_dim,timestep,batchsize]`
+    * `output_shape` : `vector`,`[hiddensize,batchsize]`or`[hiddensize,timestep,batchsize]`
     * `batch` : `int`,how many batches have been passed
     * `epoch` : same to `batch`
 * methods:  
-    * `layer=layer_init(prelayer,loss,kwgrs)`
+    * `layer=**layer_init(prelayer,loss,kwgrs)`
         * Built and init a layer.If the layer is a `input` layer,`prelayer` argument should be `input_shape`
     * `layer=layer.ff(layer,prelayer)`
     * `layer=layer.bp(layer,nextlayer)`  
-    #### LSTM layer(layer)
+    ##### LSTM layer(layer)  
+        * `layer=lstm_init_gpu(prelayer,hiddensize,return_sequence,flag,loss)`
+        * A LSTM(**Long-Short Term Memory unit - Hochreiter 1997**) layer,see [there]:http://deeplearning.net/tutorial/lstm.html for a step-by-step description of the algorithm.
+            * aviliable configures:
+                * `config.hiddensize` : `int`(`double`),number of hidden units(output dim)
+                * `config.return_sequence` :`bool`(`double`),return sequences or not.if `return_sequences`,output will be a 3D tensor with shape (hiddensize,timestep,batchsize). Else ,a 2D tensor with shape (hiddensize,batchsize). 
+                * `config.loss` : `string`,type of loss function.Optional,only be used if the layer is an ouput layer.
+                * **example**
+                
 
 	 

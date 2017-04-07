@@ -15,8 +15,8 @@ for l=1:length(hiddensize)
 configs{l}.type='lstm';configs{l}.hiddensize=hiddensize(l);configs{l}.return_sequence=1;
 end
 configs{l+1}.type='activation';configs{l+1}.act_fun='softmax';configs{l+1}.loss='categorical_cross_entropy';
-model=model_init(input_shape,configs,optimizer);
+model=model_init(input_shape,configs,1,optimizer);
 profile on;
-model=model_train(model,x,y,nb_epoch,2);
+model=model.train(x,y,nb_epoch,2,0);
 profile report;
 end
