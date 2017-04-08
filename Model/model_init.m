@@ -55,5 +55,11 @@ switch config.type
         else
             layer=activation_init(prelayer,config.act_fun,flag);
         end
+    case 'dropout'
+        if isfield(config,'loss')
+            layer=dropout_init_gpu(prelayer,config.drop_rate,flag,config.loss);
+        else
+            layer=dropout_init_gpu(prelayer,config.drop_rate,flag);
+        end
 end
 end
