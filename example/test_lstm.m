@@ -14,5 +14,7 @@ configs{l+2}.type='activation';configs{l+2}.act_fun='softmax';configs{l+2}.loss=
 model=model_init(input_shape,configs,1,optimizer);
 profile on;
 model=model.train(x,y,nb_epoch,2,0);
+loss=model.evaluate(x,y);
+disp(loss);
 profile report;
 end

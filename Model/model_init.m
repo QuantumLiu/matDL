@@ -28,12 +28,13 @@ if flag
     model.optimizer=optimizer;
     model.optimize=@(layer,batch,epoch)layer_optimize(layer,optimizer,batch,epoch);
 end
-model.eval_loss=@(outputlayer,y_true)eval_loss(outputlayer,y_true);
+model.eval_loss=@(outputlayer,y_true)eval_loss(outputlayer,y_true,model.flag);
+model.predict=@(x)model_predict(model,x);
+model.save=@(filename)model_save(model,filename);
+model.evaluate=@(x,y_true)model_evaluate(model,x,y_true);
 if flag
     model.train=@(x,y,nb_epoch,verbose,filename)model_train(model,x,y,nb_epoch,verbose,filename);
 end
-model.predict=@(x)model_predict(model,x);
-model.save=@(filename)model_save(model,filename);
 end
 function layer=layer_init(prelayer,config,flag)
 switch config.type
