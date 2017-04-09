@@ -17,6 +17,6 @@ optimizer.momentum=0;
 optimizer.opt='sgd';
 model=model_init(input_shape,configs,1,optimizer);
 profile on;
-model=model.train(x,y,nb_epoch,3,'example/minimodel_f.mat');
+model=model.train(model,x,y,nb_epoch,3,'example/minimodel_f.mat');
 profile report;
 end
