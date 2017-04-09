@@ -47,7 +47,7 @@ for epoch=1:nb_epoch
         cu_epoch_loss=mean(epoch_batch_loss(:));
         model.batch_loss=model.layers{end-1}.loss;
         if verbose>=3
-            figure(f_batch);
+            set(0,'CurrentFigure',f_batch);
             plot(model.batch_loss,'r-');hold off;
         end
         if verbose
@@ -69,10 +69,10 @@ for epoch=1:nb_epoch
     toc
     model.epoch_loss=[model.epoch_loss,cu_epoch_loss];
     if verbose>=2
-        figure(f_epoch);
-        plot(model.epoch_loss,'r-');hold off;
-        figure(f_batch);
-        plot(model.batch_loss,'r-');hold off;
+        set(0,'CurrentFigure',f_epoch);
+        plot(model.epoch_loss,'r-');
+        set(0,'CurrentFigure',f_batch);
+        plot(model.batch_loss,'r-');
     end
 end
 if filename

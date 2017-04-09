@@ -9,8 +9,10 @@ for l=1:length(hiddensize)-2
     configs{l}.type='lstm';configs{l}.hiddensize=hiddensize(l);configs{l}.return_sequence=1;
 end
 l=l+1;
-configs{l}.type='lstm';configs{l}.hiddensize=hiddensize(l);configs{l}.return_sequence=0;
-configs{l+1}.type='dense';configs{l+1}.hiddensize=hiddensize(l+1);
+configs{l}.type='dropout';configs{l}.drop_rate=0.5;
+l=l+1;
+configs{l}.type='lstm';configs{l}.hiddensize=hiddensize(l-1);configs{l}.return_sequence=0;
+configs{l+1}.type='dense';configs{l+1}.hiddensize=hiddensize(l);
 configs{l+2}.type='activation';configs{l+2}.act_fun='softmax';configs{l+2}.loss='categorical_cross_entropy';
 optimizer.learningrate=0.001;
 optimizer.momentum=0;
