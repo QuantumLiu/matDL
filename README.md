@@ -1,4 +1,5 @@
-# matDL
+# matDL  
+![matDL icon](./matDL_128X128.ico)  
 A lightweight MATLAB deeplearning toolbox,based on gpuArray.  
 One of the fastest matlab's RNN libs.
 ## Performance
@@ -37,19 +38,21 @@ OOP style
     * `model.loss`
 * methods:
     * private:
-        * `model.eval_loss=@(outputlayer,y_true)eval_loss(outputlayer,y_true)`
-        * `model.optimize=@(layer,batch,epoch)layer_optimize(layer,optimizer,batch,epoch)`
+        * `model.eval_loss=@(outputlayer,y_true,flag)eval_loss(outputlayer,y_true,flag)`
+        * `model.optimize=@(layer,optimizer,batch,epoch)layer_optimize(layer,optimizer,batch,epoch)`
     * public:
-        * `model.train=@(x,y,nb_epoch,verbose,filename)model_train(model,x,y,nb_epoch,verbose,filename)`
-            * `model=model.train(x,y,nb_epoch,verbose,filename)`  
+        * `model.train=@(model,x,y,nb_epoch,verbose,filename)model_train(model,x,y,nb_epoch,verbose,filename)`
+            * `model=model.train(model,x,y,nb_epoch,verbose,filename)`  
                 * arguments:
+                    * `model` : self  
                     * `x`:input,shape:[dim,timestep,nb_samples],or [dim,nb_samples]  
                     * `y`:targets  
                     * `nb_epoch`: how many epochs you want to train
                     * `verbose` :0,1,2,3,0 means no waitbar an figure,1 means showing waitbar only,2 means showing waitbar and plotting figures every epoch,3 means  showing waitbar and plotting figures every epoch an batch.   
-        * `model.predict=@(x)model_predict(model,x)`
-            * `y=model.predict(x)`  
-        * `**TODO:evaluate**`
+        * `model.predict=@(model,x)model_predict(model,x)`
+            * `y=model.predict(model,x)`  
+        * `model.evaluate=@(model,x,y_true)model_evaluate(model,x,y_true)`
+            * `mean_loss=model.evaluate(model,x,y_true)`
         * `model.save=@(filename)model_save(model,filename)`  
             *  `model.save(filename)`    
             * Save layers weigths and configs to a`.mat` file.
@@ -76,7 +79,9 @@ optimizer.momentum=0.2;
 optimizer.opt='sgd';
 model=model_init(input_shape,configs,1,optimizer);  
 %% Train the model  
-model=model_train(model,x,y,nb_epoch,3,'example/minimodel_f.mat');  
+model=model.train(model,x,y,nb_epoch,3,'example/minimodel_f.mat');  
+or  
+`test_lstm(50,[512,512,512],256,10,64,5);`
     
 
 ### Layers

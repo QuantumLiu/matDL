@@ -37,9 +37,9 @@ for epoch=1:nb_epoch
         end
         %% eval
         if numel(shape_y)==2
-            model.layers{end-1}=model.eval_loss(model.layers{end-1},y(:,(batch-1)*batchsize+1:batch*batchsize));
+            model.layers{end-1}=model.eval_loss(model.layers{end-1},y(:,(batch-1)*batchsize+1:batch*batchsize),model.flag);
         elseif numel(shape_y)==3
-            model.layers{end-1}=model.eval_loss(model.layers{end-1},y(:,:,(batch-1)*batchsize+1:batch*batchsize));
+            model.layers{end-1}=model.eval_loss(model.layers{end-1},y(:,:,(batch-1)*batchsize+1:batch*batchsize),model.flag);
         else
             error('The number of dims of output data must be 2/3');
         end
@@ -47,7 +47,7 @@ for epoch=1:nb_epoch
         cu_epoch_loss=mean(epoch_batch_loss(:));
         model.batch_loss=model.layers{end-1}.loss;
         if verbose>=3
-            f_batch;
+            figure(f_batch);
             plot(model.batch_loss,'r-');hold off;
         end
         if verbose
@@ -58,7 +58,7 @@ for epoch=1:nb_epoch
         %% bp
         for l=length(model.layers)-1:-1:2
             if model.layers{l}.trainable
-                model.layers{l}=model.optimize(model.layers{l}.bp(model.layers{l},model.layers{l+1}),batch,epoch);
+                model.layers{l}=model.optimize(model.layers{l}.bp(model.layers{l},model.layers{l+1}),model.optimizer,batch,epoch);
             else
                 model.layers{l}=model.layers{l}.bp(model.layers{l},model.layers{l+1});
             end
@@ -69,14 +69,14 @@ for epoch=1:nb_epoch
     toc
     model.epoch_loss=[model.epoch_loss,cu_epoch_loss];
     if verbose>=2
-        f_epoch;
+        figure(f_epoch);
         plot(model.epoch_loss,'r-');hold off;
-        f_batch;
+        figure(f_batch);
         plot(model.batch_loss,'r-');hold off;
     end
 end
 if filename
-    model.save(filename);
+    model.save(model,filename);
 end
 delete(h);
 end

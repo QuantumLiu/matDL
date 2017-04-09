@@ -13,8 +13,8 @@ configs{l+1}.type='dropout';configs{l+1}.drop_rate=0.5;
 configs{l+2}.type='activation';configs{l+2}.act_fun='softmax';configs{l+2}.loss='categorical_cross_entropy';
 model=model_init(input_shape,configs,1,optimizer);
 profile on;
-model=model.train(x,y,nb_epoch,2,0);
-loss=model.evaluate(x,y);
+model=model.train(model,x,y,nb_epoch,2,0);
+loss=model.evaluate(model,x,y);
 disp(loss);
 profile report;
 end
