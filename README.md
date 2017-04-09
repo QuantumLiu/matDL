@@ -1,5 +1,6 @@
 # matDL  
 ![matDL icon](./matDL_128X128.ico)  
+v0.42 BETA  
 A lightweight MATLAB deeplearning toolbox,based on gpuArray.  
 One of the fastest matlab's RNN libs.
 ## Performance
