@@ -12,7 +12,7 @@ if nargin<4&&flag
 elseif ~flag
     optimizer=[];
 end
-if isequal(class(minimodel),'string')
+if isequal(class(minimodel),'char')
     load(minimodel);
 end
 model=model_init([minimodel.input_shape,batch_size],minimodel.configs,flag,optimizer);

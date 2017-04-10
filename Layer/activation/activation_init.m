@@ -19,7 +19,7 @@ if ~strcmpi(layer.prelayer_type,'input')&&flag
 end
 layer.e=layer.output;
 
-if nargin>2
+if nargin>3
     [layer.loss_f,layer.loss_df]=loss_handle(loss);
     layer.loss=[];
 end
