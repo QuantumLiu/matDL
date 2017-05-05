@@ -1,4 +1,4 @@
-function layer=dense_init_gpu(prelayer,hiddensize ,flag,loss)
+function layer=dense_init_cpu(prelayer,hiddensize ,flag,loss)
 %% Basic layer attributes
 %Input tensor sahpe
 layer.trainable=1;
@@ -22,15 +22,15 @@ layer.epoch=1;
 %% Dense layer attributes
 %W contains weights bias
 layer.weights_dim=dim+1;
-layer.W=(rand([layer.weights_dim,hiddensize],'single','gpuArray')-0.5)./100;
+layer.W=(rand([layer.weights_dim,hiddensize],'single')-0.5)./100;
 if layer.timedistributed
-    layer.input=ones([layer.input_shape(1),layer.input_shape(2)+1,layer.input_shape(3)],'single','gpuArray');
+    layer.input=ones([layer.input_shape(1),layer.input_shape(2)+1,layer.input_shape(3)],'single');
 else
-    layer.input=ones([layer.input_shape(1),layer.input_shape(2)+1],'single','gpuArray');
+    layer.input=ones([layer.input_shape(1),layer.input_shape(2)+1],'single');
 end
-layer.output=zeros(layer.output_shape,'single','gpuArray');
+layer.output=zeros(layer.output_shape,'single');
 if ~strcmpi(layer.prelayer_type,'input')&&flag
-    layer.dx=zeros(layer.input_shape,'single','gpuArray');
+    layer.dx=zeros(layer.input_shape,'single');
 end
 layer.e=layer.output;
 if nargin>3&&flag

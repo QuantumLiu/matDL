@@ -1,4 +1,4 @@
-function layer=lstm_init_gpu(prelayer,hiddensize,return_sequence,flag,loss)
+function layer=lstm_init_cpu(prelayer,hiddensize,return_sequence,flag,loss)
 %% Basic layer attributes
 %Input tensor sahpe
 layer.input_shape=prelayer.output_shape;
@@ -34,32 +34,32 @@ layer.batchsize=batchsize;
 %n is the number of unrolled timesteps in one batch
 layer.n=batchsize*timestep;
 %Put x(t) and h(t) in one array 
-layer.xh=ones([batchsize,dim+1+hiddensize,timestep+1],'single','gpuArray');
+layer.xh=ones([batchsize,dim+1+hiddensize,timestep+1],'single');
 %W is the weights of all four gates and bias
 layer.weights_dim=dim+1+hiddensize;
-layer.W=(rand([layer.weights_dim,4*hiddensize],'single','gpuArray')-0.5)./100;
+layer.W=(rand([layer.weights_dim,4*hiddensize],'single')-0.5)./100;
 %Compute the value of x_t*wx_t for all ts in one time
-layer.maX=zeros([batchsize,4*hiddensize,timestep],'single','gpuArray');
+layer.maX=zeros([batchsize,4*hiddensize,timestep],'single');
 %value before activited
 layer.ma=layer.maX;
 %value activited
 layer.mb=layer.maX;
 %sc:state of cell
-layer.sc=zeros([batchsize,hiddensize,timestep],'single','gpuArray');
+layer.sc=zeros([batchsize,hiddensize,timestep],'single');
 layer.bc=layer.sc;
 %The output tensor and error
-layer.output=zeros(layer.output_shape,'single','gpuArray');
+layer.output=zeros(layer.output_shape,'single');
 layer.e=layer.sc;
 if layer.flag
 %diffs
-layer.dW=zeros(size(layer.W),'single','gpuArray');
-layer.dma=zeros([batchsize,4*hiddensize,timestep+1],'single','gpuArray');
+layer.dW=zeros(size(layer.W),'single');
+layer.dma=zeros([batchsize,4*hiddensize,timestep+1],'single');
 layer.dmb=layer.dma;
 layer.dsc=layer.sc;
 layer.dh=layer.dsc;
 end
 if ~strcmpi(layer.prelayer_type,'input')&&layer.flag
-    layer.dx=zeros(layer.input_shape,'single','gpuArray');
+    layer.dx=zeros(layer.input_shape,'single');
 end
 if nargin>4
     [layer.loss_f,layer.loss_df]=loss_handle(loss);

@@ -7,8 +7,8 @@ switch fun
         y=tanh(x);
         return
     case 'softmax'
-        E=exp(x- max(x,[],1));
-        y =  E./ sum(E,1) ;
+        E=exp(x- max(x,[],2));
+        y =  E./ sum(E,2) ;
         return
     case 'Relu'
         y=x.*(x>0);

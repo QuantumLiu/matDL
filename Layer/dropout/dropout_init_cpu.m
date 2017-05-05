@@ -1,4 +1,4 @@
-function layer=dropout_init_gpu(prelayer,drop_rate ,flag,loss)
+function layer=dropout_init_cpu(prelayer,drop_rate ,flag,loss)
 %% Basic layer attributes
 layer.trainable=0;
 layer.flag=flag;
@@ -13,11 +13,11 @@ layer.epoch=1;
 %% Dropout layer attributes
 layer.drop_rate=drop_rate;
 if layer.flag
-    layer.mask=ones(layer.output_shape,'single','gpuArray');
+    layer.mask=ones(layer.output_shape,'single');
 end
-layer.output=zeros(layer.output_shape,'single','gpuArray');
+layer.output=zeros(layer.output_shape,'single');
 if ~strcmpi(layer.prelayer_type,'input')&&flag
-    layer.dx=zeros(layer.input_shape,'single','gpuArray');
+    layer.dx=zeros(layer.input_shape,'single');
 end
 if nargin>3&&flag
     [layer.loss_f,layer.loss_df]=loss_handle(loss);

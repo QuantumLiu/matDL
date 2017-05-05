@@ -1,4 +1,4 @@
-function model=model_load(minimodel,batch_size,flag,optimizer)
+function model=model_load(minimodel,batch_size,flag,optimizer,device)
 if nargin<2
     batch_size=32;
 end
@@ -15,5 +15,5 @@ end
 if isequal(class(minimodel),'char')
     load(minimodel);
 end
-model=model_init([minimodel.input_shape,batch_size],minimodel.configs,flag,optimizer);
+model=model_init([batch_size,minimodel.input_shape],minimodel.configs,flag,optimizer,device);
 end
