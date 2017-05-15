@@ -4,12 +4,12 @@ switch nargin
         flag=0;
         device='cpu';
     case 3
-if flag
-    optimizer.type='sgd';
-    optimizer.momentum=0;
-    optimizer.learningrate=0.01;
-end
-device='cpu';
+        if flag
+            optimizer.type='sgd';
+            optimizer.momentum=0;
+            optimizer.learningrate=0.01;
+        end
+        device='cpu';
     case 4
         device='cpu';
 end
@@ -26,13 +26,13 @@ model.layers=cell(1,length(configs)+1);
 model.layers{1}=tensor_init(input_shape,'input');
 switch device
     case 'cpu'
-for l=2:length(model.layers)
-    model.layers{l}=layer_init_cpu(model.layers{l-1},configs{l-1},flag);
-end
+        for l=2:length(model.layers)
+            model.layers{l}=layer_init_cpu(model.layers{l-1},configs{l-1},flag);
+        end
     case 'gpu'
-for l=2:length(model.layers)
-    model.layers{l}=layer_init_gpu(model.layers{l-1},configs{l-1},flag);
-end
+        for l=2:length(model.layers)
+            model.layers{l}=layer_init_gpu(model.layers{l-1},configs{l-1},flag);
+        end
 end
 model.layers=[model.layers,0];
 for l=1:length(model.layers)-1
@@ -73,9 +73,9 @@ switch config.type
         end
     case 'activation'
         if isfield(config,'loss')
-            layer=activation_init(prelayer,config.act_fun,flag,config.loss);
+            layer=activation_init_gpu(prelayer,config.act_fun,flag,config.loss);
         else
-            layer=activation_init(prelayer,config.act_fun,flag);
+            layer=activation_init_gpu(prelayer,config.act_fun,flag);
         end
     case 'dropout'
         if isfield(config,'loss')
@@ -101,9 +101,9 @@ switch config.type
         end
     case 'activation'
         if isfield(config,'loss')
-            layer=activation_init(prelayer,config.act_fun,flag,config.loss);
+            layer=activation_init_cpu(prelayer,config.act_fun,flag,config.loss);
         else
-            layer=activation_init(prelayer,config.act_fun,flag);
+            layer=activation_init_cpu(prelayer,config.act_fun,flag);
         end
     case 'dropout'
         if isfield(config,'loss')
